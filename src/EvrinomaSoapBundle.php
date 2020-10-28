@@ -3,6 +3,7 @@
 
 namespace Evrinoma\SoapBundle;
 
+use Evrinoma\SoapBundle\DependencyInjection\EvrinomaSoapExtension;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class EvrinomaSoapBundle extends Bundle

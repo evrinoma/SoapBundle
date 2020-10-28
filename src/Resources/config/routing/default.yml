@@ -1,0 +1,11 @@
+soap:
+  resource: "@EvrinomaSoapBundle/Controller/SoapController.php"
+  type: annotation
+
+#soap:
+#  path: /soap/{alias}
+#  methods: GET
+#  defaults: { _controller: Evrinoma\SoapBundle\Controller\SoapController::soapAction", _format: xml }
+#  name: soap_route
+#  options:
+#    expose: true
