@@ -10,7 +10,7 @@ use Symfony\Component\Cache\Adapter\RedisAdapter;
  *
  * @package Evrinoma\SoapBundle\Cache
  */
-class RedisCache implements AdapterInterface
+class RedisCache implements CahceAdapterInterface
 {
 //region SECTION: Fields
     /**

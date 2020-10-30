@@ -3,7 +3,7 @@
 namespace Evrinoma\SoapBundle\Manager;
 
 
-use Evrinoma\SoapBundle\Cache\AdapterInterface;
+use Evrinoma\SoapBundle\Cache\CahceAdapterInterface;
 use PHP2WSDL\PHPClass2WSDL;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,7 +19,6 @@ class SoapManager implements SoapManagerInterface
 
 //region SECTION: Fields
     private $url;
-    private $asFile;
 
     /**
      * @var SoapServiceInterface[]
@@ -27,14 +26,14 @@ class SoapManager implements SoapManagerInterface
     private $soapServices = [];
 
     /**
-     * @var AdapterInterface
+     * @var CahceAdapterInterface
      */
 
     private $cache;
 //endregion Fields
 
 //region SECTION: Constructor
-    public function __construct(RequestStack $requestStack, AdapterInterface $cache, array $params = [])
+    public function __construct(RequestStack $requestStack, CahceAdapterInterface $cache, array $params = [])
     {
         $this->url   = $requestStack->getCurrentRequest()->getSchemeAndHttpHost().( array_key_exists('url',$params) ? $params['url'] : '/evrinoma/soap/');
         $this->cache = $cache;

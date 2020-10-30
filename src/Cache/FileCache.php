@@ -8,7 +8,7 @@ use PHP2WSDL\PHPClass2WSDL;
  *
  * @package Evrinoma\SoapBundle\Cache
  */
-class FileCache implements AdapterInterface
+class FileCache implements CahceAdapterInterface
 {
     private $extension = '.wsdl';
 

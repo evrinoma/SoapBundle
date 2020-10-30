@@ -8,7 +8,7 @@ use PHP2WSDL\PHPClass2WSDL;
  *
  * @package Evrinoma\SoapBundle\Cache
  */
-interface AdapterInterface
+interface CahceAdapterInterface
 {
     public function has(string $key):bool;
     public function get(string $key):string;
