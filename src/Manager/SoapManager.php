@@ -2,6 +2,8 @@
 
 namespace Evrinoma\SoapBundle\Manager;
 
+
+use Evrinoma\SoapBundle\Cache\AdapterInterface;
 use PHP2WSDL\PHPClass2WSDL;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +18,6 @@ class SoapManager implements SoapManagerInterface
 {
 
 //region SECTION: Fields
-    private $extension = '.wsdl';
     private $url;
     private $asFile;
 
@@ -26,17 +27,17 @@ class SoapManager implements SoapManagerInterface
     private $soapServices = [];
 
     /**
-     * @var string
+     * @var AdapterInterface
      */
-    private $connectionString;
+
+    private $cache;
 //endregion Fields
 
 //region SECTION: Constructor
-    public function __construct(RequestStack $requestStack, array $params = [])
+    public function __construct(RequestStack $requestStack, AdapterInterface $cache, array $params = [])
     {
-        $this->url    = $requestStack->getCurrentRequest()->getSchemeAndHttpHost().( array_key_exists('url',$params) ? $params['url'] : '/soap/');
-        $this->asFile = array_key_exists('redis',$params) ? true : false;
-        $this->connectionString = array_key_exists('redis',$params)  ? $params['redis'] : null;
+        $this->url   = $requestStack->getCurrentRequest()->getSchemeAndHttpHost().( array_key_exists('url',$params) ? $params['url'] : '/evrinoma/soap/');
+        $this->cache = $cache;
     }
 //endregion Constructor
 
@@ -48,42 +49,38 @@ class SoapManager implements SoapManagerInterface
 //endregion Public
 
 //region SECTION: Private
-    private function create(SoapServiceInterface $service)
+    private function create(SoapServiceInterface $service):string
     {
-        /*
-         * проверить еслить ли в кеш файл  всдл. Если файла нет, то создаем файл и загружаем его в кеш
-         * если есть то
-         */
-        $wsdl = $this->generateWsdl($service->getRoute(), $service->getService());
+        if (! $this->cache->has($service->getRoute())) {
+            $wsdlGenerator =  $this->generateWsdl($service->getRoute(), $service->getClass());
+            $this->cache->set($wsdlGenerator, $service->getRoute());
+        }
 
-        return '';
+        return $service->getClass();
     }
 
-    private function generateWsdl(string $route, string $class)
+    private function generateWsdl(string $route, string $class): PHPClass2WSDL
     {
         $wsdlGenerator = new PHPClass2WSDL($class, $this->url.$route);
         $wsdlGenerator->generateWSDL(true);
-        $wsdl = $wsdlGenerator->dump();
 
-        if ($this->asFile) {
-            $wsdlGenerator->save($route.$this->extension);
-
-            return $route.$this->extension;
-        } else {
-
-            return 'data://text/plain;base64,'.base64_encode($wsdl);
-        }
+       return $wsdlGenerator;
     }
 //endregion Private
 
 //region SECTION: Getters/Setters
-    public function getWsdl(string $route):string
+    public function getWsdl(string $key):string
     {
-        if (array_key_exists($route, $this->soapServices)) {
-            return $this->soapServices[$route];
+        if (array_key_exists($key, $this->soapServices)) {
+            return $this->cache->get($key);
         } else {
             throw new \Exception('Wsdl not found');
         }
+    }
+
+    public function getService(string $key): string
+    {
+        return array_key_exists($key, $this->soapServices) ? $this->soapServices[$key]:'';
     }
 //endregion Getters/Setters
 }

@@ -3,7 +3,6 @@
 
 namespace Evrinoma\SoapBundle\Controller;
 
-use Evrinoma\SoapBundle\Manager\SoapManager;
 use Evrinoma\SoapBundle\Manager\SoapManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,10 +32,10 @@ class SoapController extends AbstractController
      */
     public function soapAction(string $name)
     {
-        if ($this->has($name)) {
-
+        $serviceAlias = $this->soapManager->getService($name);
+        if ($this->has($serviceAlias)) {
             $wsdl        = $this->soapManager->getWsdl($name);
-            $soapService = $this->get($name);
+            $soapService = $this->get($serviceAlias);
 
             $soapServer = new \SoapServer($wsdl, ['soap_version' => SOAP_1_2]);
 
