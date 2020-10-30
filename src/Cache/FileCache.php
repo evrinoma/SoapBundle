@@ -1,4 +1,5 @@
 <?php
+
 namespace Evrinoma\SoapBundle\Cache;
 
 use PHP2WSDL\PHPClass2WSDL;
@@ -10,22 +11,43 @@ use PHP2WSDL\PHPClass2WSDL;
  */
 class FileCache implements CahceAdapterInterface
 {
+//region SECTION: Fields
     private $extension = '.wsdl';
+    private $path;
+//endregion Fields
 
+//region SECTION: Constructor
+    /**
+     * FileCache constructor.
+     *
+     * @param string $path
+     * @param string $extension
+     */
+    public function __construct(string $path, string $extension)
+    {
+        $this->path      = $path === '~' ? '' : $path;
+        $this->extension = '.'.$extension;
+    }
+//endregion Constructor
+
+//region SECTION: Public
     public function has(string $key): bool
     {
-        return file_exists ( $key.$this->extension ) ;
+        return file_exists($this->path.$key.$this->extension);
     }
+//endregion Public
 
+//region SECTION: Getters/Setters
     public function get(string $key): string
     {
-        return $key.$this->extension;
+        return $this->path.$key.$this->extension;
     }
 
     public function set(PHPClass2WSDL $wsdlGenerator, string $key): bool
     {
-        $status = $wsdlGenerator->save($key.$this->extension);
+        $status = $wsdlGenerator->save($this->path.$key.$this->extension);
 
-        return $status!==false;
+        return $status !== false;
     }
+//endregion Getters/Setters
 }

@@ -22,10 +22,13 @@ class RedisCache implements CahceAdapterInterface
 //region SECTION: Constructor
     /**
      * RedisCache constructor.
+     *
+     * @param string $host
+     * @param string $port
      */
-    public function __construct()
+    public function __construct(string $host, string $port)
     {
-        $redisConnection = RedisAdapter::createConnection('redis://172.18.1.14:6379');
+        $redisConnection = RedisAdapter::createConnection('redis://'.$host.':'.$port);
 
         $this->cache = new RedisAdapter($redisConnection, $namespace = '', 0);
     }
