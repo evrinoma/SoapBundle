@@ -1,15 +1,10 @@
 services:
   evrinoma.soap.manager:
-    alias: Evrinoma\SoapBundle\Manager\SoapManager
-
-  Evrinoma\SoapBundle\Manager\SoapManagerInterface:
-    alias: Evrinoma\SoapBundle\Manager\SoapManager
+    class: Evrinoma\SoapBundle\Manager\SoapManager
+    autowire: true
 
   Evrinoma\SoapBundle\Manager\SoapManager:
-    arguments:
-      - '@request_stack'
-      - '@evrinoma.redis.cache'
-#      - '@evrinoma.file.cache'
+    alias: evrinoma.soap.manager
 
   evrinoma.soap.controller:
     class: Evrinoma\SoapBundle\Controller\SoapController

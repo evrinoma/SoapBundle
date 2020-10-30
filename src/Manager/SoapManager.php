@@ -6,7 +6,6 @@ namespace Evrinoma\SoapBundle\Manager;
 use Evrinoma\SoapBundle\Cache\CahceAdapterInterface;
 use PHP2WSDL\PHPClass2WSDL;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Response;
 
 
 /**
@@ -18,6 +17,9 @@ class SoapManager implements SoapManagerInterface
 {
 
 //region SECTION: Fields
+    /**
+     * @var string
+     */
     private $url;
 
     /**
@@ -28,15 +30,21 @@ class SoapManager implements SoapManagerInterface
     /**
      * @var CahceAdapterInterface
      */
-
     private $cache;
 //endregion Fields
 
 //region SECTION: Constructor
-    public function __construct(RequestStack $requestStack, CahceAdapterInterface $cache, array $params = [])
+    /**
+     * SoapManager constructor.
+     *
+     * @param RequestStack          $requestStack
+     * @param CahceAdapterInterface $cache
+     * @param string|null           $url
+     */
+    public function __construct(RequestStack $requestStack, CahceAdapterInterface $cache, string $url)
     {
-        $this->url   = $requestStack->getCurrentRequest()->getSchemeAndHttpHost().( array_key_exists('url',$params) ? $params['url'] : '/evrinoma/soap/');
         $this->cache = $cache;
+        $this->url   = ($url === '') ? $requestStack->getCurrentRequest()->getSchemeAndHttpHost().'/evrinoma/soap/' : $url;
     }
 //endregion Constructor
 
@@ -48,10 +56,10 @@ class SoapManager implements SoapManagerInterface
 //endregion Public
 
 //region SECTION: Private
-    private function create(SoapServiceInterface $service):string
+    private function create(SoapServiceInterface $service): string
     {
-        if (! $this->cache->has($service->getRoute())) {
-            $wsdlGenerator =  $this->generateWsdl($service->getRoute(), $service->getClass());
+        if (!$this->cache->has($service->getRoute())) {
+            $wsdlGenerator = $this->generateWsdl($service->getRoute(), $service->getClass());
             $this->cache->set($wsdlGenerator, $service->getRoute());
         }
 
@@ -63,12 +71,12 @@ class SoapManager implements SoapManagerInterface
         $wsdlGenerator = new PHPClass2WSDL($class, $this->url.$route);
         $wsdlGenerator->generateWSDL(true);
 
-       return $wsdlGenerator;
+        return $wsdlGenerator;
     }
 //endregion Private
 
 //region SECTION: Getters/Setters
-    public function getWsdl(string $key):string
+    public function getWsdl(string $key): string
     {
         if (array_key_exists($key, $this->soapServices)) {
             return $this->cache->get($key);
@@ -79,7 +87,7 @@ class SoapManager implements SoapManagerInterface
 
     public function getService(string $key): string
     {
-        return array_key_exists($key, $this->soapServices) ? $this->soapServices[$key]:'';
+        return array_key_exists($key, $this->soapServices) ? $this->soapServices[$key] : '';
     }
 //endregion Getters/Setters
 }

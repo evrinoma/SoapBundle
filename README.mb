@@ -1,2 +1,5 @@
 #Configuration
 
+soap:
+    url: custom url
+    cache: adator to cache should implement CahceAdapterInterface

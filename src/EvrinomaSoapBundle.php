@@ -3,7 +3,6 @@
 
 namespace Evrinoma\SoapBundle;
 
-use Evrinoma\MenuBundle\DependencyInjection\Compiler\MenuItemPass;
 use Evrinoma\SoapBundle\DependencyInjection\Compiler\SoapServicePass;
 use Evrinoma\SoapBundle\DependencyInjection\EvrinomaSoapExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -11,7 +10,11 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class EvrinomaSoapBundle extends Bundle
 {
+//region SECTION: Fields
+    public const SOAP_BUNDLE = 'soap';
+//endregion Fields
 
+//region SECTION: Public
     public function build(ContainerBuilder $container)
     {
         parent::build($container);
@@ -20,6 +23,8 @@ class EvrinomaSoapBundle extends Bundle
             $container->addCompilerPass(new SoapServicePass());
         }
     }
+//endregion Public
+
 //region SECTION: Getters/Setters
     public function getContainerExtension()
     {
