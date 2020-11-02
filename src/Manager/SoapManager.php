@@ -4,8 +4,8 @@ namespace Evrinoma\SoapBundle\Manager;
 
 
 use Evrinoma\SoapBundle\Cache\CahceAdapterInterface;
+use Evrinoma\SoapBundle\Discovery\CustomAutoDiscovery;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Zend\Soap\AutoDiscover;
 use Zend\Soap\Wsdl;
 
 
@@ -69,7 +69,7 @@ class SoapManager implements SoapManagerInterface
 
     private function generateWsdl(string $route, string $class, string $serviceName): Wsdl
     {
-        $autodiscover = new AutoDiscover();
+        $autodiscover = new CustomAutoDiscovery();
         $autodiscover
             ->setClass($class)
             ->setUri($this->url.$route)
