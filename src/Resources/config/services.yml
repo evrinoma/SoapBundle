@@ -14,14 +14,9 @@ services:
     alias: evrinoma.soap.controller
     public: true
 
-  evrinoma.soap.listener.subscriber:
-    class: Evrinoma\SoapBundle\Subscriber\SoapAnnotationSubscriber
-    arguments:
-      - '@annotations.reader'
-    tags:
-      - { name: kernel.event_subscriber }
+  evrinoma.discovery.manager:
+    class: Evrinoma\SoapBundle\Discovery\CustomAutoDiscovery
+    autowire: true
 
-  Evrinoma\SoapBundle\Subscriber\SoapAnnotationSubscriber:
-    alias: evrinoma.soap.listener.subscriber
-    public: true
-
+  Evrinoma\SoapBundle\Discovery\CustomAutoDiscovery:
+    alias: evrinoma.discovery.manager

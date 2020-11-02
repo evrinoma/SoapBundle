@@ -60,8 +60,8 @@ class EvrinomaSoapExtension extends Extension
         $container->setParameter('evrinoma.soap.url', $url);
 
         $definition = $container->getDefinition('evrinoma.soap.manager');
-        $definition->setArgument(1, new Reference($cache));
-        $definition->setArgument(2, new Parameter('evrinoma.soap.url'));
+        $definition->setArgument('$cache', new Reference($cache));
+        $definition->setArgument('$url', new Parameter('evrinoma.soap.url'));
 
         $alias = new Alias('evrinoma.soap.manager');
         $container->addAliases(['Evrinoma\SoapBundle\Manager\SoapManagerInterface' => $alias]);

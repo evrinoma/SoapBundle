@@ -32,20 +32,27 @@ class SoapManager implements SoapManagerInterface
      * @var CahceAdapterInterface
      */
     private $cache;
+
+    /**
+     * @var CustomAutoDiscovery
+     */
+    private $autoDiscover;
 //endregion Fields
 
 //region SECTION: Constructor
     /**
      * SoapManager constructor.
      *
+     * @param CustomAutoDiscovery   $customAutoDiscovery
      * @param RequestStack          $requestStack
      * @param CahceAdapterInterface $cache
-     * @param string|null           $url
+     * @param string                $url
      */
-    public function __construct(RequestStack $requestStack, CahceAdapterInterface $cache, string $url)
+    public function __construct(CustomAutoDiscovery $customAutoDiscovery, RequestStack $requestStack, CahceAdapterInterface $cache, string $url)
     {
-        $this->cache = $cache;
-        $this->url   = ($url === '') ? $requestStack->getCurrentRequest()->getSchemeAndHttpHost().'/evrinoma/soap/' : $url;
+        $this->autoDiscover = $customAutoDiscovery;
+        $this->cache        = $cache;
+        $this->url          = ($url === '') ? $requestStack->getCurrentRequest()->getSchemeAndHttpHost().'/evrinoma/soap/' : $url;
     }
 //endregion Constructor
 
@@ -69,13 +76,12 @@ class SoapManager implements SoapManagerInterface
 
     private function generateWsdl(string $route, string $class, string $serviceName): Wsdl
     {
-        $autodiscover = new CustomAutoDiscovery();
-        $autodiscover
+        $this->autoDiscover
             ->setClass($class)
             ->setUri($this->url.$route)
             ->setServiceName($serviceName);
 
-        return $autodiscover->generate();
+        return $this->autoDiscover->generate();
     }
 //endregion Private
 

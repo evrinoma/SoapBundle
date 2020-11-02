@@ -2,9 +2,12 @@
 
 namespace Evrinoma\SoapBundle\Discovery;
 
+use Doctrine\Common\Annotations\Reader;
+use Evrinoma\SoapBundle\Annotation\Exclude;
 use Evrinoma\SoapBundle\Manager\SoapServiceInterface;
 use Zend\Soap\AutoDiscover;
 use Zend\Soap\Wsdl;
+use Zend\Soap\Wsdl\ComplexTypeStrategy\ComplexTypeStrategyInterface as ComplexTypeStrategy;
 
 /**
  * Class CustomAutoDiscovery
@@ -13,7 +16,17 @@ use Zend\Soap\Wsdl;
  */
 final class CustomAutoDiscovery extends AutoDiscover
 {
+    /**
+     * @var Reader
+     */
+    private $annotationReader;
+
 //region SECTION: Protected
+    public function __construct(Reader $annotationReader, ComplexTypeStrategy $strategy = null, $endpointUri = null, $wsdlClass = null, array $classMap = [])
+    {
+        $this->annotationReader = $annotationReader;
+        parent::__construct($strategy, $endpointUri, $wsdlClass, $classMap);
+    }
     /**
      * Generate the WSDL for a service class.
      *
@@ -23,7 +36,7 @@ final class CustomAutoDiscovery extends AutoDiscover
     {
         $methods = [];
 
-        $excluded = $this->getExcludeMethods();
+        $excluded = $this->getExcludeMethods2();
 
         foreach ($this->reflection->reflectClass($this->class)->getMethods() as $method) {
             if (!(array_key_exists($method->getName(), $excluded))) {
@@ -52,4 +65,21 @@ final class CustomAutoDiscovery extends AutoDiscover
         return $methods;
     }
 //endregion Private
+
+    private function getExcludeMethods2()
+    {
+        $public = [];
+
+        $reflection    = new \ReflectionClass($this->class);
+        $methods = $reflection->getMethods();
+        foreach ($methods as $method)
+        {
+            $annotation = $this->annotationReader->getMethodAnnotation($method, Exclude::class);
+            if ($annotation) {
+                $public[] = $method->getName();
+            }
+        }
+
+        return $public;
+    }
 }
