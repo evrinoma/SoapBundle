@@ -14,19 +14,14 @@ services:
     alias: evrinoma.soap.controller
     public: true
 
-#  evrinoma.file.cache:
-#    class:  Evrinoma\SoapBundle\Cache\FileCache
-#    autowire: true
-#
-#  evrinoma.redis.cache:
-#    class: Evrinoma\SoapBundle\Cache\RedisCache
-#    autowire: true
-#
-#  Evrinoma\SoapBundle\Cache\FileCache:
-#    alias: evrinoma.file.cache
-#    public: true
-#
-#  Evrinoma\SoapBundle\Cache\RedisCache:
-#    alias: evrinoma.redis.cache
-#    public: true
+  evrinoma.soap.listener.subscriber:
+    class: Evrinoma\SoapBundle\Subscriber\SoapAnnotationSubscriber
+    arguments:
+      - '@annotations.reader'
+    tags:
+      - { name: kernel.event_subscriber }
+
+  Evrinoma\SoapBundle\Subscriber\SoapAnnotationSubscriber:
+    alias: evrinoma.soap.listener.subscriber
+    public: true
 
