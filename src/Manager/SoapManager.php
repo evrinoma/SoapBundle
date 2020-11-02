@@ -4,8 +4,9 @@ namespace Evrinoma\SoapBundle\Manager;
 
 
 use Evrinoma\SoapBundle\Cache\CahceAdapterInterface;
-use PHP2WSDL\PHPClass2WSDL;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Zend\Soap\AutoDiscover;
+use Zend\Soap\Wsdl;
 
 
 /**
@@ -59,19 +60,22 @@ class SoapManager implements SoapManagerInterface
     private function create(SoapServiceInterface $service): string
     {
         if (!$this->cache->has($service->getRoute())) {
-            $wsdlGenerator = $this->generateWsdl($service->getRoute(), $service->getClass());
+            $wsdlGenerator = $this->generateWsdl($service->getRoute(), $service->getClass(), $service->getServiceName());
             $this->cache->set($wsdlGenerator, $service->getRoute());
         }
 
         return $service->getClass();
     }
 
-    private function generateWsdl(string $route, string $class): PHPClass2WSDL
+    private function generateWsdl(string $route, string $class, string $serviceName): Wsdl
     {
-        $wsdlGenerator = new PHPClass2WSDL($class, $this->url.$route);
-        $wsdlGenerator->generateWSDL(true);
+        $autodiscover = new AutoDiscover();
+        $autodiscover
+            ->setClass($class)
+            ->setUri($this->url.$route)
+            ->setServiceName($serviceName);
 
-        return $wsdlGenerator;
+        return $autodiscover->generate();
     }
 //endregion Private
 

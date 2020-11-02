@@ -2,7 +2,7 @@
 
 namespace Evrinoma\SoapBundle\Cache;
 
-use PHP2WSDL\PHPClass2WSDL;
+use Zend\Soap\Wsdl;
 
 /**
  * Class FileCache
@@ -25,7 +25,7 @@ class FileCache implements CahceAdapterInterface
      */
     public function __construct(string $path, string $extension)
     {
-        $this->path      = $path === '~' ? '' : $path;
+        $this->path      = $path;//=== '~' ? '' : $path;
         $this->extension = '.'.$extension;
     }
 //endregion Constructor
@@ -43,9 +43,9 @@ class FileCache implements CahceAdapterInterface
         return $this->path.$key.$this->extension;
     }
 
-    public function set(PHPClass2WSDL $wsdlGenerator, string $key): bool
+    public function set(Wsdl $wsdlGenerator, string $key): bool
     {
-        $status = $wsdlGenerator->save($this->path.$key.$this->extension);
+        $status = $wsdlGenerator->dump($this->path.$key.$this->extension);
 
         return $status !== false;
     }

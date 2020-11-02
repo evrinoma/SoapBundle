@@ -2,8 +2,8 @@
 
 namespace Evrinoma\SoapBundle\Cache;
 
-use PHP2WSDL\PHPClass2WSDL;
 use Symfony\Component\Cache\Adapter\RedisAdapter;
+use Zend\Soap\Wsdl;
 
 /**
  * Class RedisCache
@@ -53,9 +53,9 @@ class RedisCache implements CahceAdapterInterface
         return 'data://text/plain;base64,'.base64_encode($value);
     }
 
-    public function set(PHPClass2WSDL $wsdlGenerator, string $key): bool
+    public function set(Wsdl $wsdlGenerator, string $key): bool
     {
-        $wsdl = $wsdlGenerator->dump();
+        $wsdl = $wsdlGenerator->toXml();
 
         $cacheItem = $this->cache->getItem($key);
         $cacheItem->set($wsdl);

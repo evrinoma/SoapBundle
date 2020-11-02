@@ -12,5 +12,7 @@ interface SoapServiceInterface
     public function getRoute(): string;
 
     public function getClass(): string;
+
+    public function getServiceName():string;
 //endregion Getters/Setters
 }

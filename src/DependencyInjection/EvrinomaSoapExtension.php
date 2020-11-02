@@ -50,7 +50,7 @@ class EvrinomaSoapExtension extends Extension
 
         if ($cache === 'evrinoma.file.cache') {
             $arguments = [
-                'evrinoma.soap.settings.file.path' => $settings['file']['path'],
+                'evrinoma.soap.settings.file.path' => ($settings['file']['path'] === '~') ? $container->getParameter('kernel.cache_dir') : $settings['file']['path'],
                 'evrinoma.soap.settings.file.extension' => $settings['file']['extension'],
             ];
 

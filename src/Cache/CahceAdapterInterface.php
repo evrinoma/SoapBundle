@@ -1,7 +1,7 @@
 <?php
 namespace Evrinoma\SoapBundle\Cache;
 
-use PHP2WSDL\PHPClass2WSDL;
+use Zend\Soap\Wsdl;
 
 /**
  * Interface AdapterInterface
@@ -12,5 +12,5 @@ interface CahceAdapterInterface
 {
     public function has(string $key):bool;
     public function get(string $key):string;
-    public function set(PHPClass2WSDL $wsdlGenerator,string $key):bool;
+    public function set(Wsdl $wsdlGenerator,string $key):bool;
 }
