@@ -10,7 +10,9 @@
             file:
                 extension: wsdl
                 path: ~
-
+            example:
+                dummy: false | true - register example soap service's
+                
 #Annotation
    @Exclude - to remove method class from soap implementation please use this annotation
       

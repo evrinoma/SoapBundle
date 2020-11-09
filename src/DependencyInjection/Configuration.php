@@ -43,6 +43,12 @@ class Configuration implements ConfigurationInterface
                                 ->scalarNode('path')->defaultValue('~')->info('path to cache directory')->end()
                             ->end()
                         ->end()
+                        ->arrayNode('example')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->booleanNode('dummy')->defaultValue(false)->end()
+                            ->end()
+                        ->end()
                     ->end()
                 ->end()
             ->end();

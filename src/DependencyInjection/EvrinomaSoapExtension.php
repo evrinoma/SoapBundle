@@ -57,6 +57,26 @@ class EvrinomaSoapExtension extends Extension
             $this->addDefinition('Evrinoma\SoapBundle\Cache\FileCache', 'evrinoma.file.cache', $this->toParams($arguments));
         }
 
+        if ($settings['example']['dummy']) {
+            $definition = $this->addDefinition('Evrinoma\SoapBundle\Service\Dummy\A', 'evrinoma.service.dummy.a', [], true);
+            $definition->addTag('evrinoma.service.soap');
+
+            $definition = $this->addDefinition('Evrinoma\SoapBundle\Service\Dummy\I', 'evrinoma.service.dummy.i', [], true);
+            $definition->addTag('evrinoma.service.soap');
+
+
+//            $definition = new Definition('Evrinoma\SoapBundle\Service\Dummy\A');
+//            $definition
+//                ->addTag('evrinoma.service.soap')
+//                ->setPublic(true);
+//            $alias      = new Alias('evrinoma.service.dummy.a');
+//            $alias->setPublic(true);
+//            $this->container->addDefinitions(['evrinoma.service.dummy.a' => $definition]);
+//            $this->container->addAliases(['Evrinoma\SoapBundle\Service\Dummy\A' => $alias]);
+
+
+        }
+
         $container->setParameter('evrinoma.soap.url', $url);
 
         $definition = $container->getDefinition('evrinoma.soap.manager');
@@ -70,6 +90,11 @@ class EvrinomaSoapExtension extends Extension
 //endregion Public
 
 //region SECTION: Private
+    /**
+     * @param $arguments
+     *
+     * @return array
+     */
     private function toParams($arguments)
     {
         $params = [];
@@ -83,16 +108,31 @@ class EvrinomaSoapExtension extends Extension
         return $params;
     }
 
-    private function addDefinition($className, $aliasName, $arguments)
+    /**
+     * @param string $className
+     * @param string $aliasName
+     * @param        $arguments
+     * @param false  $public
+     *
+     * @return Definition
+     */
+    private function addDefinition(string $className,string $aliasName, $arguments, $public = false):Definition
     {
         $definition = new Definition($className);
         $alias      = new Alias($aliasName);
+
+        if ($public) {
+            $definition->setPublic(true);
+            $alias->setPublic(true);
+        }
         $this->container->addDefinitions([$aliasName => $definition]);
         $this->container->addAliases([$className => $alias]);
 
         foreach ($arguments as $key => $argument) {
             $definition->setArgument($key, $argument);
         }
+
+        return $definition;
     }
 //endregion Private
 
