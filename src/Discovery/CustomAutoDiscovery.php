@@ -36,7 +36,7 @@ final class CustomAutoDiscovery extends AutoDiscover
     {
         $methods = [];
 
-        $excluded = $this->getExcludeMethods2();
+        $excluded = $this->getExcludeMethods();
 
         foreach ($this->reflection->reflectClass($this->class)->getMethods() as $method) {
             if (!(array_key_exists($method->getName(), $excluded))) {
@@ -48,25 +48,7 @@ final class CustomAutoDiscovery extends AutoDiscover
     }
 //endregion Protected
 
-//region SECTION: Private
     private function getExcludeMethods()
-    {
-        $methods = [];
-
-        $interface = new \ReflectionClass(SoapServiceInterface::class);
-
-        array_filter(
-            $interface->getMethods(),
-            function ($object) use (&$methods) {
-                $methods [$object->name] = $object->name;
-            }
-        );
-
-        return $methods;
-    }
-//endregion Private
-
-    private function getExcludeMethods2()
     {
         $public = [];
 
@@ -76,7 +58,8 @@ final class CustomAutoDiscovery extends AutoDiscover
         {
             $annotation = $this->annotationReader->getMethodAnnotation($method, Exclude::class);
             if ($annotation) {
-                $public[] = $method->getName();
+                $name = $method->getName();
+                $public[$name] = $name;
             }
         }
 
