@@ -28,13 +28,6 @@ interface SoapServiceInterface
      *
      * @return string
      */
-   // public function getAlias(): string;
-
-    /**
-     * @Exclude
-     *
-     * @return string
-     */
     public function getServiceName():string;
 //endregion Getters/Setters
 }

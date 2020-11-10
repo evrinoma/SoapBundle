@@ -5,6 +5,8 @@ namespace Evrinoma\SoapBundle\Manager;
 
 use Evrinoma\SoapBundle\Cache\CahceAdapterInterface;
 use Evrinoma\SoapBundle\Discovery\CustomAutoDiscovery;
+use Evrinoma\UtilsBundle\Manager\AbstractBaseManager;
+use Evrinoma\UtilsBundle\Rest\RestTrait;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Zend\Soap\Wsdl;
 
@@ -14,8 +16,9 @@ use Zend\Soap\Wsdl;
  *
  * @package Evrinoma\SoapBundle\Manager
  */
-class SoapManager implements SoapManagerInterface
+class SoapManager extends AbstractBaseManager implements SoapManagerInterface
 {
+    use RestTrait;
 
 //region SECTION: Fields
     /**
@@ -99,5 +102,15 @@ class SoapManager implements SoapManagerInterface
     {
         return array_key_exists($key, $this->soapServices) ? $this->soapServices[$key] : '';
     }
+
+    public function getData()
+    {
+       return $this->soapServices;
+    }
+
 //endregion Getters/Setters
+    public function getRestStatus(): int
+    {
+        return $this->status;
+    }
 }

@@ -14,6 +14,14 @@ services:
     alias: evrinoma.soap.controller
     public: true
 
+  evrinoma.soap.api.controller:
+    class: Evrinoma\SoapBundle\Controller\SoapApiController
+    autowire: true
+
+  Evrinoma\SoapBundle\Controller\SoapApiController:
+    alias: evrinoma.soap.api.controller
+    public: true
+
   evrinoma.discovery.manager:
     class: Evrinoma\SoapBundle\Discovery\CustomAutoDiscovery
     autowire: true

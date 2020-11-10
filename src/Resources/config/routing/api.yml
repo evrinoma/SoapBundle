@@ -1,0 +1,3 @@
+soap_api:
+  resource: "@EvrinomaSoapBundle/Controller/SoapApiController.php"
+  type: annotation
