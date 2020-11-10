@@ -1,6 +1,9 @@
 services:
   evrinoma.soap.manager:
     class: Evrinoma\SoapBundle\Manager\SoapManager
+    arguments:
+      - '@evrinoma.discovery.manager'
+      - '@request_stack'
 
   Evrinoma\SoapBundle\Manager\SoapManager:
     alias: evrinoma.soap.manager
@@ -14,6 +17,10 @@ services:
 
   evrinoma.soap.api.controller:
     class: Evrinoma\SoapBundle\Controller\SoapApiController
+    arguments:
+      - '@jms_serializer'
+      - '@evrinoma.soap.manager'
+    autowire: true
 
   Evrinoma\SoapBundle\Controller\SoapApiController:
     alias: evrinoma.soap.api.controller
@@ -21,6 +28,8 @@ services:
 
   evrinoma.discovery.manager:
     class: Evrinoma\SoapBundle\Discovery\CustomAutoDiscovery
+    arguments:
+      - '@annotations.reader'
 
   Evrinoma\SoapBundle\Discovery\CustomAutoDiscovery:
     alias: evrinoma.discovery.manager
