@@ -1,14 +1,12 @@
 services:
   evrinoma.soap.manager:
     class: Evrinoma\SoapBundle\Manager\SoapManager
-    autowire: true
 
   Evrinoma\SoapBundle\Manager\SoapManager:
     alias: evrinoma.soap.manager
 
   evrinoma.soap.controller:
     class: Evrinoma\SoapBundle\Controller\SoapController
-    autowire: true
 
   Evrinoma\SoapBundle\Controller\SoapController:
     alias: evrinoma.soap.controller
@@ -16,7 +14,6 @@ services:
 
   evrinoma.soap.api.controller:
     class: Evrinoma\SoapBundle\Controller\SoapApiController
-    autowire: true
 
   Evrinoma\SoapBundle\Controller\SoapApiController:
     alias: evrinoma.soap.api.controller
@@ -24,7 +21,6 @@ services:
 
   evrinoma.discovery.manager:
     class: Evrinoma\SoapBundle\Discovery\CustomAutoDiscovery
-    autowire: true
 
   Evrinoma\SoapBundle\Discovery\CustomAutoDiscovery:
     alias: evrinoma.discovery.manager
