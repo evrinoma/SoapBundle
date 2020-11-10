@@ -45,7 +45,7 @@ final class SoapApiController extends AbstractApiController
 //region SECTION: Public
     /**
      * @Rest\Get("/api/soap/get", name="api_get_soap")
-     * @SWG\Get(tags={"soap"})
+     * @SWG\Get(tags={"soap service"})
      * @SWG\Response(response=200,description="Get soap services")
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
