@@ -16,7 +16,9 @@
 #Annotation
    @Exclude - to remove method class from soap implementation please use this annotation
       
-#Class registration as service
+#How to register services
+Registration as service:
+--------------------------------------------
       App\Service\MailService:
         public: true
         autowire: true
@@ -121,3 +123,10 @@ Soap AbstractClass implementation:
         }
     }
 
+#Basic user Authentication 
+    soap:
+      http_basic:
+        realm: Secured Area
+      pattern: ^/evrinoma/soap/*
+      provider: core_provider
+      
