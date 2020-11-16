@@ -44,7 +44,7 @@ final class SoapApiController extends AbstractApiController
 
 //region SECTION: Public
     /**
-     * @Rest\Get("/api/soap/get", name="api_get_soap")
+     * @Rest\Get("/api/soap/get", name="api_get_soap", options={"expose"=true})
      * @SWG\Get(tags={"soap service"})
      * @SWG\Response(response=200,description="Get soap services")
      *
