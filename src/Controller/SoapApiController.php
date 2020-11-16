@@ -50,7 +50,7 @@ final class SoapApiController extends AbstractApiController
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function menuGetAction()
+    public function getAction()
     {
         return $this->json($this->soapManager->setRestSuccessOk()->getData(), $this->soapManager->getRestStatus());
     }
