@@ -129,4 +129,5 @@ Soap AbstractClass implementation:
         realm: Secured Area
       pattern: ^/evrinoma/soap/*
       provider: core_provider
+
       
