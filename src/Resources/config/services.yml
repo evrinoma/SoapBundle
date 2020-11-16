@@ -10,6 +10,7 @@ services:
 
   evrinoma.soap.controller:
     class: Evrinoma\SoapBundle\Controller\SoapController
+    autowire: true
 
   Evrinoma\SoapBundle\Controller\SoapController:
     alias: evrinoma.soap.controller
