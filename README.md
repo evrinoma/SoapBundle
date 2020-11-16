@@ -12,10 +12,10 @@
                 path: ~
             example:
                 dummy: false | true - register example soap service's
-                
+
 #Annotation
    @Exclude - to remove method class from soap implementation please use this annotation
-      
+
 #How to register services
 Registration as service:
 --------------------------------------------
@@ -25,7 +25,7 @@ Registration as service:
         autoconfigure: true
         tags:
           - { name: evrinoma.service.soap }
-      
+ 
 Soap AbstractClass implementation:
 --------------------------------------------
     /**
